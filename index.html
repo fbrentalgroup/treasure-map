@@ -80,9 +80,29 @@ background:linear-gradient(90deg,transparent,rgba(158,99,38,.10),transparent);
 
 
 /* Public Google Sites version */
-body{background:transparent}
-.map{margin:10px auto;width:min(1500px,100%);}
-a{font-weight:700;touch-action:manipulation}
+body{
+  background:transparent;
+}
+
+.map{
+  width:100%;
+  max-width:none;
+  margin:0 auto;
+  padding:24px 28px 30px;
+}
+
+table{
+  font-size:16px;
+}
+
+th,td{
+  padding:8px 9px;
+}
+
+a{
+  font-weight:700;
+  touch-action:manipulation;
+}
 @media(max-width:700px){
  .map{margin:0 auto;padding:12px 8px 20px;border-width:3px;box-shadow:none}
  .map:before,.map:after{display:none}
@@ -125,7 +145,7 @@ a{font-weight:700;touch-action:manipulation}
 <section class="banner"><div class="over">OVER</div><div class="money">$19,164</div><div class="msg">IN TREASURE IS UP FOR GRABS!</div></section>
 
 <table>
-<thead><tr><th>#</th><th class="editable">Company</th><th class="editable">Booth No.</th><th class="editable">Grand Prize</th><th class="editable">Prize Photo</th><th class="editable">Notes</th></tr></thead>
+<thead><tr><th>#</th><th class="editable">Company</th><th class="editable">Booth No.</th><th class="editable">Treasure</th><th class="editable">Prize Photo</th><th class="editable">Notes</th></tr></thead>
 <tbody id="vendors"></tbody>
 </table>
 
@@ -161,7 +181,7 @@ function vendorRow(v,i){
     <td class="num">${i+1}</td>
     <td class="company">${esc(v.company)}</td>
     <td class="booth">${booth}</td>
-    <td class="prize">${esc(v.prize || "To be announced")}</td>
+    <td class="prize">${esc(v.prize || "TBD")}</td>
     <td class="photo">
       ${v.photo_text && v.photo_url
         ? `<a href="${esc(v.photo_url)}" target="_blank" rel="noopener">${esc(v.photo_text)}</a>`
