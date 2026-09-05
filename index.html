@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2027 Scavenger Hunt Treasure Map</title>
+<style>
+:root{--ink:#2a2015;--red:#8c2020;--gold:#b8842b;--tan:#f4e5bd;--tan2:#ead09a;--line:#5b4024;--blue:#0645c0}
+*{box-sizing:border-box}
+body{margin:0;background:#2b241d;color:var(--ink);font-family:Arial,sans-serif}
+.toolbar{position:sticky;top:0;z-index:20;display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:9px 12px;background:#fff;border-bottom:1px solid #ccc}
+button{padding:7px 10px;border:1px solid #aaa;border-radius:6px;background:#f8f8f8;cursor:pointer}
+button:hover{background:#eee}.tip{margin-left:auto;font-size:12px;color:#555}
+.map{
+width:min(1500px,97vw);
+margin:26px auto;
+padding:34px 38px 36px;
+position:relative;
+background:
+  radial-gradient(circle at 12% 18%,rgba(116,77,32,.10),transparent 25%),
+  radial-gradient(circle at 85% 75%,rgba(116,77,32,.11),transparent 26%),
+  linear-gradient(110deg,rgba(255,255,255,.16),rgba(107,64,20,.07)),
+  #f3dfb5;
+border:5px solid #7a5128;
+border-radius:4px;
+box-shadow:
+  0 10px 28px rgba(0,0,0,.42),
+  inset 0 0 24px rgba(89,51,18,.24),
+  inset 0 0 70px rgba(111,68,24,.10);
+}
+.map:before,.map:after{
+content:"";
+position:absolute;
+left:18px;
+right:18px;
+height:18px;
+z-index:-1;
+background:linear-gradient(90deg,#70421c,#c69348 8%,#8a5828 18%,#d2a55e 50%,#8a5828 82%,#c69348 92%,#70421c);
+border:2px solid #5b3518;
+border-radius:50%;
+box-shadow:0 3px 7px rgba(0,0,0,.3);
+}
+.map:before{top:-12px}
+.map:after{bottom:-12px}
+.top{display:grid;grid-template-columns:1.15fr .9fr .35fr;gap:18px;align-items:center}
+.title{text-align:center;font-family:Georgia,serif}.title .big{font-size:42px;font-weight:900}.title .place{font-size:31px;color:var(--red);font-weight:800}
+.dates{text-align:center;font:700 22px Georgia,serif}.year{text-align:center;font-size:48px;font-weight:900;border:2px solid var(--line);padding:6px}
+.ribbon{display:grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--line);margin:15px 0}
+.ribbon>div{padding:8px;text-align:center;font-weight:700}.ribbon>div+div{border-left:1.5px solid var(--line)}
+.banner{display:grid;grid-template-columns:auto auto 1fr;gap:14px;align-items:center;padding:8px 14px;margin:10px 0;border-top:3px solid var(--line);border-bottom:3px solid var(--line);background:#a65a2010}
+.banner .over{font-size:34px;font-weight:900}.banner .money{font-size:46px;font-weight:900;color:var(--red);white-space:nowrap}.banner .msg{font-size:34px;font-weight:900}
+table{width:100%;border-collapse:collapse;background:#fff1;font-size:14px}
+th,td{border:1.3px solid var(--line);padding:6px 7px;vertical-align:middle}
+th{font-weight:800;text-align:center;background:#7a4b1914}
+.num{width:38px;text-align:center;font-weight:700}.company{width:22%}.booth{width:10%;text-align:center}.prize{width:24%;text-align:center}.photo{width:14%;text-align:center}.notes{width:30%;text-align:center}
+a{color:var(--blue);text-decoration:underline}
+.section-title{margin-top:22px;padding:8px 12px;text-align:center;font:900 29px Georgia,serif;color:var(--red);border-top:3px double var(--line);border-bottom:3px double var(--line)}
+.bonus-intro{padding:12px;text-align:center;font:700 17px Georgia,serif;line-height:1.45}
+.bonus-table td:nth-child(1){width:28%;font-weight:700}.bonus-table td:nth-child(2){width:22%;font-weight:700;text-align:center}.bonus-table td:nth-child(3){width:50%}
+.editable[contenteditable=true]{outline:2px dashed #1269c988;outline-offset:-2px;background:#fff7}
+.edit-tools{display:none;margin-left:4px;font-size:11px;padding:2px 5px}.editing .edit-tools{display:inline-block}
+.editing a{pointer-events:none}
+.footer{margin-top:18px;display:flex;justify-content:space-between;gap:20px;font:italic 700 20px Georgia,serif}.footer .right{color:var(--red);text-align:right;font-size:26px}
+
+.title .big,.dates,.year,.section-title{font-family:Georgia,"Times New Roman",serif}
+.ribbon{
+background:rgba(255,247,218,.20);
+}
+.banner{
+background:linear-gradient(90deg,rgba(152,91,31,.06),rgba(255,245,210,.28),rgba(152,91,31,.06));
+}
+th{
+background:rgba(122,75,25,.11);
+font-family:Georgia,"Times New Roman",serif;
+}
+tbody tr:nth-child(even) td{background:rgba(255,255,255,.035)}
+.section-title{
+background:linear-gradient(90deg,transparent,rgba(158,99,38,.10),transparent);
+}
+
+
+/* Public Google Sites version */
+body{background:transparent}
+.map{margin:10px auto;width:min(1500px,100%);}
+a{font-weight:700;touch-action:manipulation}
+@media(max-width:700px){
+ .map{margin:0 auto;padding:12px 8px 20px;border-width:3px;box-shadow:none}
+ .map:before,.map:after{display:none}
+ .title .big{font-size:28px}.title .place{font-size:24px}.dates{font-size:17px}.year{font-size:32px}
+ .ribbon{grid-template-columns:1fr}.ribbon>div+div{border-left:0;border-top:1.5px solid var(--line)}
+ .banner{gap:2px;padding:8px}.banner .over{font-size:22px}.banner .money{font-size:38px}.banner .msg{font-size:22px}
+ table,thead,tbody,tr,th,td{display:block}
+ table thead{display:none}
+ #vendors tr{position:relative;margin:10px 0;border:1.5px solid var(--line);background:rgba(255,248,222,.35);padding:8px 8px 8px 42px}
+ #vendors td{border:0;padding:4px 5px;text-align:left;width:auto}
+ #vendors .num{position:absolute;left:8px;top:9px;width:28px;height:28px;line-height:28px;text-align:center;padding:0;border:1.5px solid var(--line);border-radius:50%;font-weight:900}
+ #vendors .company{font-size:17px;font-weight:900}
+ #vendors .booth:before{content:'Booth: ';font-weight:800}
+ #vendors .prize:before{content:'Treasure: ';font-weight:800}
+ #vendors .photo a{display:inline-block;padding:8px 12px;border:1px solid var(--line);border-radius:5px;background:rgba(255,255,255,.28)}
+ #vendors .notes{font-style:italic}
+ .section-title{font-size:24px}
+ .bonus-table tr{margin:9px 0;border:1px solid var(--line);padding:7px}
+ .bonus-table td{border:0!important;width:auto!important;text-align:left!important;padding:3px 5px}
+ .footer{display:block;text-align:center;font-size:16px}.footer .right{text-align:center;font-size:21px;margin-top:8px}
+}
+
+@media(max-width:850px){.top{grid-template-columns:1fr}.banner{grid-template-columns:1fr;text-align:center}.title .big{font-size:32px}.tip{display:none}table{font-size:12px}.map{padding:15px}}
+@media print{
+ body{background:white}.toolbar,.edit-tools{display:none!important}.map{width:100%;margin:0;box-shadow:none;border:5px solid #6a4725;padding:14px}
+ .editable[contenteditable=true]{outline:none;background:transparent}.top{grid-template-columns:1.15fr .9fr .35fr}
+ @page{size:landscape;margin:.25in}
+}
+</style>
+</head>
+<body>
+
+<main class="map" id="map">
+<section class="top">
+ <div class="title"><div class="big">Scavenger Hunt 2027</div><div class="place">New Orleans</div></div>
+ <div class="dates">Trade Show: Feb 14 - 17th, 2027</div>
+ <div class="year">2027</div>
+</section>
+<section class="ribbon"><div class="editable">Want your Group member Badge Ribbon?</div><div class="editable">visit Makita's Booth</div></section>
+<section class="banner"><div class="over">OVER</div><div class="money">$19,164</div><div class="msg">IN TREASURE IS UP FOR GRABS!</div></section>
+
+<table>
+<thead><tr><th>#</th><th class="editable">Company</th><th class="editable">Booth No.</th><th class="editable">Grand Prize</th><th class="editable">Prize Photo</th><th class="editable">Notes</th></tr></thead>
+<tbody id="vendors"></tbody>
+</table>
+
+<div class="section-title">☠ BONUS ROUNDS ☠</div>
+<div class="bonus-intro" id="bonusIntro">The Four Baratarians: Seek out the four Baratarians. Scan each crew member's shirt to earn bonus treasure! One of the four also carries a SECRET ITEM — discover it to earn +1 BONUS POINT!</div>
+<table class="bonus-table">
+<thead><tr><th class="editable">Baratarian</th><th class="editable">Role</th><th class="editable">Description</th></tr></thead>
+<tbody id="bonus"></tbody>
+</table>
+
+<section class="footer"><div class="editable">Visit the booths. • Scan the QR codes. • Complete the challenges.</div><div class="right">Follow the Clues. Find the Treasure!</div></section>
+</main>
+
+<script>
+const originalVendors=[{"company": "A & H Hose", "booth": "", "prize": "", "photo_text": "", "photo_url": "", "notes": "", "notes_url": ""}, {"company": "Alert Rental Software", "booth": "", "prize": "Yeti Gear Box", "photo_text": "View Prize", "photo_url": "https://drive.google.com/file/d/1ch3G_O-aAzpp5C_0nI4ec8482v8slShp/view?usp=sharing", "notes": "Members only Show Special!", "notes_url": "https://drive.google.com/file/d/1xROQ3YAf4njWOWZvbC8-EPWB7dB5r151/view?usp=sharing"}, {"company": "ARA/ERG", "booth": "", "prize": "", "photo_text": "", "photo_url": "", "notes": "", "notes_url": ""}, {"company": "Barreto", "booth": "", "prize": "Laser cut sign", "photo_text": "View Prize", "photo_url": "https://drive.google.com/file/d/1wFzLeX_sQgwXkjBYFfCrp_7txE_wE7Vy/view?usp=sharing", "notes": "", "notes_url": ""}, {"company": "Bartell", "booth": "", "prize": "gift card + diamond blade", "photo_text": "View Prize", "photo_url": "https://drive.google.com/file/d/1w45ERMHp1nxkFKnDhnCdUobQ2y5O0PBQ/view?usp=sharing", "notes": "", "notes_url": ""}, {"company": "City Restore", "booth": "", "prize": "Restore Kit", "photo_text": "View Prize", "photo_url": "https://drive.google.com/file/d/1csiZeivTPa_IIkFhUDIvBHyC3HLFLP-x/view?usp=sharing", "notes": "", "notes_url": ""}, {"company": "Epiroc/Paladin", "booth": "", "prize": "42 Qt Artic Cooler", "photo_text": "View Prize", "photo_url": "https://drive.google.com/file/d/1pm_qijn96JTnQfcDGgsPHZYr9u_6pvXo/view?usp=sharing", "notes": "", "notes_url": ""}, {"company": "Essex-Silverline", "booth": "", "prize": "Edger Replacement Pad (2)", "photo_text": "View Prize", "photo_url": "https://drive.google.com/file/d/1qHlLZAK2ut2EYvI4A4n4IxrhiK61yiy8/view?usp=sharing", "notes": "", "notes_url": ""}, {"company": "Green Monster", "booth": "", "prize": "Branded Swag + Gift Card", "photo_text": "View Prize", "photo_url": "https://drive.google.com/file/d/1L8SFI3WLAUWTGGFylmNmtuDpBNqLKmh6/view?usp=sharing", "notes": "", "notes_url": ""}, {"company": "HAPN", "booth": "", "prize": "GPS Package", "photo_text": "", "photo_url": "", "notes": "", "notes_url": ""}, {"company": "In-A-bind", "booth": "", "prize": "Decal package", "photo_text": "View Prize", "photo_url": "https://drive.google.com/file/d/1UP5DefcwbMDZ4AjsPkkutiEnRS7p2gTZ/view?usp=sharing", "notes": "Get your Scavenger Hunt Decals!", "notes_url": "https://drive.google.com/file/d/1sNzNolFSZ-LcOgxHJptL9y-5iG4SDWBC/view?usp=sharing"}, {"company": "IntergraRental", "booth": "", "prize": "1 Yr Software", "photo_text": "View Prize", "photo_url": "https://drive.google.com/file/d/17Vo-TWSvIytjMy8tJ5mRS5L144wI-MbF/view?usp=sharing", "notes": "*Ask how you can save on Credit Card Fees", "notes_url": ""}, {"company": "JWL International", "booth": "", "prize": "Glass Decanter Set", "photo_text": "View Prize", "photo_url": "https://drive.google.com/file/d/1EDT0mo4lGRx1DBwCExjZwWVhE0lHr4Aa/view?usp=sharing", "notes": "", "notes_url": ""}, {"company": "Kato", "booth": "", "prize": "Kentucky Bourbon", "photo_text": "View Prize", "photo_url": "https://drive.google.com/file/d/1QyqwSYkw6rHhZaFgNMn7DJt8IaE1Xg1l/view?usp=sharing", "notes": "", "notes_url": ""}, {"company": "Makita USA", "booth": "", "prize": "40v Tool combo", "photo_text": "View Prize", "photo_url": "https://drive.google.com/file/d/1vP6oE7vx7gJkjLr6IS72XVQ9PZFvsYa6/view?usp=sharing", "notes": "", "notes_url": ""}, {"company": "PEG", "booth": "", "prize": "12 months of Ignite", "photo_text": "View Prize", "photo_url": "https://drive.google.com/file/d/1y8mypVWRS4rjuE8KZwf-yNxTmqQxHJfq/view?usp=sharing", "notes": "", "notes_url": ""}, {"company": "POR", "booth": "", "prize": "JBL Speaker", "photo_text": "View Prize", "photo_url": "https://drive.google.com/file/d/17AkxwXIypYmwMqFgMrn9cUTuh9_WSgy4/view?usp=sharing", "notes": "", "notes_url": ""}, {"company": "Quipli", "booth": "", "prize": "1 yr to Quinn", "photo_text": "View Prize", "photo_url": "https://drive.google.com/file/d/1YUxpox7Jhw82yUH_sY3BsXWzPT5_5H_n/view?usp=sharing", "notes": "Get You Quipli socks Here!", "notes_url": "https://drive.google.com/file/d/14tlES08HiRT5mZvgp3N19skpbTfMkLyi/view?usp=sharing"}, {"company": "Record 360", "booth": "", "prize": "JBL Speaker", "photo_text": "View Prize", "photo_url": "https://drive.google.com/file/d/1gWvU2CE25z7A2YWq6t51wDX6aQKPbLZ7/view?usp=sharing", "notes": "", "notes_url": ""}, {"company": "Renterra", "booth": "", "prize": "Yeti Cooler", "photo_text": "View Prize", "photo_url": "https://drive.google.com/file/d/1aWQoKbkhZXTNj0kQXTqvsYfEeGeAR_rf/view?usp=sharing", "notes": "", "notes_url": ""}, {"company": "Snorkel", "booth": "", "prize": "Model of Lift", "photo_text": "View Prize", "photo_url": "https://drive.google.com/file/d/1VQIye-YOPAsFAptOzdgWKzbwDWyyhZBY/view?usp=sharing", "notes": "", "notes_url": ""}, {"company": "Third Coast Equipment", "booth": "", "prize": "Plate Compactor", "photo_text": "View Prize", "photo_url": "https://drive.google.com/file/d/1Ltb50CbpJJgcOnjdroe_j8ePXuWRNyTW/view?usp=sharing", "notes": "", "notes_url": ""}, {"company": "Toku america", "booth": "", "prize": "JBL Speaker", "photo_text": "View Prize", "photo_url": "https://drive.google.com/file/d/1G-YL0a1HWM-08Lx7TbAdshQ9ycSUQGY6/view?usp=sharing", "notes": "", "notes_url": ""}, {"company": "Toro", "booth": "", "prize": "", "photo_text": "", "photo_url": "", "notes": "", "notes_url": ""}, {"company": "Twelve Legs", "booth": "", "prize": "Google Visibility Audit", "photo_text": "View Prize", "photo_url": "https://drive.google.com/file/d/1VLbgBzG0Pt-Fidlefz8E9JCY6nq9xYBM/view?usp=sharing", "notes": "Personalized Colorado Greeting card packets", "notes_url": "https://drive.google.com/file/d/1f98DMT3iNnWlSvCkMlxdRl4GS0otf_NR/view?usp=sharing"}];
+const originalBonus=[["Renford Koehn", "The Carpenter", "Builder and repairer of the Merchant's Fortune."], ["Ray Balcom", "The Boatswain", "Keeper of the deck and commander of the crew."], ["Gunner Mulloy", "The Master Gunner", "Defender of the Vault and master of the ship's cannons."], ["Ed Craddock", "The Captain", "Master of the hunt and commander of the crew"]];\n\nfunction esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}\nfunction vendorRow(v,i){\n const tr=document.createElement("tr");\n const booth=v.booth?esc(v.booth):"TBA";\n tr.innerHTML=`<td class="num">${i+1}</td>\n <td class="company">${esc(v.company)}</td>\n <td class="booth">${booth}</td>\n <td class="prize">${esc(v.prize||"To be announced")}</td>\n <td class="photo">${v.photo_text&&v.photo_url?`<a href="${esc(v.photo_url)}" target="_blank" rel="noopener">${esc(v.photo_text)}</a>`:""}</td>\n <td class="notes">${v.notes?(v.notes_url?`<a href="${esc(v.notes_url)}" target="_blank" rel="noopener">${esc(v.notes)}</a>`:esc(v.notes)):""}</td>`;\n return tr;\n}\nfunction render(){\n const vb=document.getElementById("vendors"); originalVendors.forEach((v,i)=>vb.appendChild(vendorRow(v,i)));\n const bb=document.getElementById("bonus"); originalBonus.forEach(r=>{const tr=document.createElement("tr");tr.innerHTML=`<td>${esc(r[0])}</td><td>${esc(r[1])}</td><td>${esc(r[2])}</td>`;bb.appendChild(tr)});\n}\nrender();\n</script>\n</body></html>
