@@ -46,12 +46,14 @@ box-shadow:0 3px 7px rgba(0,0,0,.3);
 .title{text-align:center;font-family:Georgia,serif}.title .big{font-size:42px;font-weight:900}.title .place{font-size:31px;color:var(--red);font-weight:800}
 .dates{text-align:center;font:700 22px Georgia,serif}.year{text-align:center;font-size:48px;font-weight:900;border:2px solid var(--line);padding:6px}
   /* Hidden 7 Easter Egg */
-.secret-seven {
-  color: #991b1e;
-  text-decoration: none;
+.year .secret-seven {
+  color: #991b1e !important;
+  text-decoration: none !important;
   cursor: pointer;
   position: relative;
-  font: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 .secret-seven::after {
@@ -79,10 +81,10 @@ box-shadow:0 3px 7px rgba(0,0,0,.3);
     opacity: 0;
     transform: scale(0.4) rotate(180deg);
   }
+.year .secret-seven:hover {
+  color: #c28b16 !important;
+  text-shadow: 0 0 7px rgba(194, 139, 22, 0.7);
 }
-
-.secret-seven:hover {
-  color: #c28b16;
   text-shadow: 0 0 7px rgba(194, 139, 22, 0.7);
 }
 .ribbon{display:grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--line);margin:15px 0}
