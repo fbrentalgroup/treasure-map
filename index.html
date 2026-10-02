@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>2027 Scavenger Hunt Treasure Map</title>
+<!-- Google Analytics: Treasure Map traffic and interactions -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-5X5MXJ6E9Y"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-5X5MXJ6E9Y');
+</script>
 <style>
 :root{--ink:#2a2015;--red:#8c2020;--gold:#b8842b;--tan:#f4e5bd;--tan2:#ead09a;--line:#5b4024;--blue:#0645c0}
 *{box-sizing:border-box}
@@ -188,18 +196,18 @@ a{
 <div class="dates">
   <div>Trade Show: Feb 14 - 16th, 2027</div>
   <div style="margin-top: 6px;">
-    <a href="Route-Map-2027.png"
+    <a data-track-event="plan_hunt_click" href="Route-Map-2027.png"
        target="_blank"
        style="color:#991b1e; font-weight:bold; text-decoration:underline;">
       🗺️ PLAN YOUR HUNT — VIEW SUGGESTED ROUTES
     </a>
   </div>
 </div>
-<div class="year">202<a href="Captains-secret.png?v=2" target="_blank" class="secret-seven" title="What be this?">7</a></div>
+<div class="year">202<a data-track-event="hidden_7_click" data-vendor-name="The Warnick Group" data-booth-number="1306" href="Captains-secret.png?v=2" target="_blank" class="secret-seven" title="What be this?">7</a></div>
 </section>
 <section class="ribbon">
   <div class="editable">
-    <a href="https://www.fbrentalgroup.com/calendar-of-events/annual-scavenger-hunt/how-to-play">HOW TO PLAY</a>
+    <a data-track-event="how_to_play_click" href="https://www.fbrentalgroup.com/calendar-of-events/annual-scavenger-hunt/how-to-play">HOW TO PLAY</a>
   </div>
   <div class="editable" style="color: #991b1e;">
     Visit your Makita Booth 3357 to get your exclusive Member Badge Ribbon.
@@ -243,6 +251,7 @@ function esc(s){
 function vendorRow(v,i){
   const tr = document.createElement("tr");
   const booth = v.booth ? esc(v.booth) : "TBA";
+  const tracking = `data-vendor-name="${esc(v.company)}" data-booth-number="${esc(v.booth)}" data-prize-name="${esc(v.prize)}"`;
 
   tr.innerHTML = `
     <td class="num">${i+1}</td>
@@ -251,13 +260,13 @@ function vendorRow(v,i){
     <td class="prize">${esc(v.prize || "TBD")}</td>
     <td class="photo">
       ${v.photo_text && v.photo_url
-        ? `<a href="${esc(v.photo_url)}" target="_blank" rel="noopener">${esc(v.photo_text)}</a>`
+        ? `<a data-track-event="vendor_prize_click" ${tracking} href="${esc(v.photo_url)}" target="_blank" rel="noopener">${esc(v.photo_text)}</a>`
         : ""}
     </td>
     <td class="notes">
       ${v.notes
         ? (v.notes_url
-            ? `<a href="${esc(v.notes_url)}" target="_blank" rel="noopener">${esc(v.notes)}</a>`
+            ? `<a data-track-event="vendor_special_click" ${tracking} href="${esc(v.notes_url)}" target="_blank" rel="noopener">${esc(v.notes)}</a>`
             : esc(v.notes))
         : ""}
     </td>
@@ -278,7 +287,7 @@ function render(){
   originalBonus.forEach(r => {
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td><a href="${esc(r[3])}" target="_blank" rel="noopener">${esc(r[0])}</a></td>
+      <td><a data-track-event="baratarian_click" data-character-role="${esc(r[1])}" href="${esc(r[3])}" target="_blank" rel="noopener">${esc(r[0])}</a></td>
       <td>${esc(r[1])}</td>
       <td>${esc(r[2])}</td>
     `;
@@ -287,6 +296,38 @@ function render(){
 }
 
 render();
+
+// Track link activation without delaying or cancelling navigation.
+// Role labels identify bonus characters; personal names are not sent.
+function trackMapLink(event) {
+  if (event.type === 'auxclick' && event.button !== 1) return;
+  const link = event.target.closest && event.target.closest('a[data-track-event]');
+  if (!link || document.body.classList.contains('editing')) return;
+  try {
+    const destination = new URL(link.href, window.location.href);
+    const parameters = {
+      event_year: '2027',
+      link_url: destination.origin + destination.pathname,
+      link_domain: destination.hostname,
+      outbound: destination.origin !== window.location.origin
+    };
+    for (const [attribute, parameter] of [
+      ['vendorName', 'vendor_name'],
+      ['boothNumber', 'booth_number'],
+      ['prizeName', 'prize_name'],
+      ['characterRole', 'character_role']
+    ]) {
+      if (link.dataset[attribute]) parameters[parameter] = link.dataset[attribute].slice(0, 100);
+    }
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', link.dataset.trackEvent, parameters);
+    }
+  } catch (_) {
+    // Analytics must never interfere with the map.
+  }
+}
+document.addEventListener('click', trackMapLink);
+document.addEventListener('auxclick', trackMapLink);
 </script>
 </body>
 </html>
